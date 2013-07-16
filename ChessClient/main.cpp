@@ -1,3 +1,6 @@
-int main(){
-	return 0;
+#include "ChessClient.h"
+
+int main() {
+	ChessClient client;
+	return client.start();
 }
