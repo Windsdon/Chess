@@ -63,6 +63,9 @@ void Settings::fillDefault(){
 	initial.insert(pair<string, string>("width", "1280"));
 	initial.insert(pair<string, string>("height", "720"));
 	initial.insert(pair<string, string>("antiAlias", "2"));
+	initial.insert(pair<string, string>("fullscreen", "false"));
+	initial.insert(pair<string, string>("framerate", "60"));
+	initial.insert(pair<string, string>("lang", "EN"));
 
 	for(map<string, string>::iterator it = initial.begin(); it != initial.end(); ++it){
 		if(config.find(it->first) == config.end()){

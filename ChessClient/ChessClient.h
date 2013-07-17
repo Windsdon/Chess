@@ -4,9 +4,11 @@
 
 #include <SFML/Graphics.hpp>
 #include <SFML/Network.hpp>
+#include <SFML/System.hpp>
 #include <list>
 #include <string>
 #include "Settings.h"
+#include "Language.h"
 
 using namespace std;
 
@@ -22,6 +24,7 @@ class ChessClient {
 		int start(); //initiates the client, creating the window
 
 		static const string getUserID(); //returns a unique ID. DO NOT mistake this for Settings['id']. This one generates a random string, that's all.
+		static const int USER_ID_SIZE = 64;
 
 	private:
 		int onStart(); //creates the window and subsystems
@@ -47,11 +50,14 @@ class ChessClient {
 
 		Settings settings;
 
+		Language *lang;
+
 		sf::RenderWindow *window;
 
 		int width;
 		int height;
 		int antiAliasLevel;
+		int framerate;
 
 		static const string defaultHost; //the default host
 

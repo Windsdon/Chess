@@ -73,11 +73,17 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="ChessClient.cpp" />
+    <ClCompile Include="Helpers.cpp" />
+    <ClCompile Include="Language.cpp" />
+    <ClCompile Include="LoadingBar.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Settings.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ChessClient.h" />
+    <ClInclude Include="Helpers.h" />
+    <ClInclude Include="Language.h" />
+    <ClInclude Include="LoadingBar.h" />
     <ClInclude Include="Settings.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
