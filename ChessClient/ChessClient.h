@@ -9,6 +9,7 @@
 #include <string>
 #include "Settings.h"
 #include "Language.h"
+#include "Tilemap.h"
 
 using namespace std;
 
@@ -63,6 +64,11 @@ class ChessClient {
 
 		static const string title;
 
+		Tilemap *defaultMap;
+		static const int texCountX = 5;
+		static const int texCountY = 5;
+		static const int texWidth = 200;
+		static const int texHeight = 200;
 		
 };
 

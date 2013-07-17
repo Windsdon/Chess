@@ -98,6 +98,16 @@ int ChessClient::onLoad(){
 
 	loadingText.setPosition((width - bounds.width)/2, ((height - barHeight)/2 - 2*bounds.height));
 
+	cout << "Creating tilemap\n";
+
+	defaultMap = new Tilemap(texCountX, texCountY, texWidth, texHeight, "res/tilemap.png");
+
+	sf::Thread loadTextures(&Tilemap::loadFromFile, defaultMap);
+	loadTextures.launch();
+
+	sf::Sprite horse;
+	horse.setColor(sf::Color::Green);
+
 	while(window->isOpen()){
 
 		sf::Event e;
@@ -110,8 +120,14 @@ int ChessClient::onLoad(){
 
 		window->clear();
 		window->draw(windowBG);
-		loadingBar.draw(window, sf::RenderStates::Default);
-		window->draw(loadingText);
+		if(defaultMap->completed < 1){
+			loadingBar.draw(window, sf::RenderStates::Default);
+			loadingBar.setCompletion(defaultMap->completed);
+			window->draw(loadingText);
+		}else{
+			horse.setTexture(*defaultMap->get(4,0));
+			window->draw(horse);
+		}
 		window->display();
 	}
 

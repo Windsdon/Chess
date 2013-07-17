@@ -12,7 +12,7 @@ const string Language::reference[] = {
 const int Language::size = 1;
 
 Language::Language(string file, string lang): lang(size) {
-	regex languageIdentifier("\\[(.*),(.*)\\]");
+	regex languageIdentifier("^\\[(.*),(.*)\\]$");
 	//regex languageIdentifier("^\\[([a-zA-Z_]+),([^\\]]+)]$");
 	regex commentLine("^ *#+.*$");
 	regex validLine("^([A-Za-z_]+) (.*)$");
@@ -70,7 +70,7 @@ Language::Language(string file, string lang): lang(size) {
 		cin.get();
 		exit(1); //yep, fatal failure
 	}
-}
+}	
 
 const string Language::get(Language::Dicio t){
 	try{
