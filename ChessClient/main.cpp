@@ -1,6 +1,12 @@
 #include "ChessClient.h"
+#include <iostream>
+
 
 int main() {
 	ChessClient client;
-	return client.start();
+
+	client.start();
+
+	std::cin.get();
+	return 0;
 }

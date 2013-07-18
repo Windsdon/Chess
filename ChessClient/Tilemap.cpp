@@ -8,7 +8,7 @@ Tilemap::~Tilemap(void) {
 	}
 }
 
-void Tilemap::loadFromFile(){
+void Tilemap::load(){
 	sf::Image img;
 
 	cout << "Loading tilemap " << filename << endl;
@@ -34,7 +34,11 @@ void Tilemap::loadFromFile(){
 	}
 
 	completed = 1;
-	cout << "Finished loading.";
+	cout << "Finished loading.\n";
+}
+
+double  Tilemap::getLoadCompletion(){
+	return completed;
 }
 
 sf::Texture *Tilemap::get(int x, int y) const{

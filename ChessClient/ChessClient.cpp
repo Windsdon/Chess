@@ -22,6 +22,8 @@ ChessClient::ChessClient(string autoHost) : host(autoHost) {
 
 ChessClient::~ChessClient(void) {
 	//settings.saveToFile();
+	delete lang;
+	delete defaultMap;
 }
 
 const string ChessClient::getUserID(){
@@ -102,8 +104,12 @@ int ChessClient::onLoad(){
 
 	defaultMap = new Tilemap(texCountX, texCountY, texWidth, texHeight, "res/tilemap.png");
 
-	sf::Thread loadTextures(&Tilemap::loadFromFile, defaultMap);
+	resources.add(defaultMap, "tilemap");
+
+	sf::Thread loadTextures(&Tilemap::load, defaultMap);
 	loadTextures.launch();
+	
+	//resources.load(); //TODO!
 
 	sf::Sprite horse;
 	horse.setColor(sf::Color::Green);
@@ -122,7 +128,7 @@ int ChessClient::onLoad(){
 		window->draw(windowBG);
 		if(defaultMap->completed < 1){
 			loadingBar.draw(window, sf::RenderStates::Default);
-			loadingBar.setCompletion(defaultMap->completed);
+			loadingBar.setCompletion(resources.getLoadCompletion());
 			window->draw(loadingText);
 		}else{
 			horse.setTexture(*defaultMap->get(4,0));
@@ -132,8 +138,6 @@ int ChessClient::onLoad(){
 	}
 
 	settings.saveToFile();
-
-	cin.get();
 
 	return 0;
 }

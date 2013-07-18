@@ -77,6 +77,8 @@
     <ClCompile Include="Language.cpp" />
     <ClCompile Include="LoadingBar.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="ResourcePack.cpp" />
+    <ClCompile Include="Screen.cpp" />
     <ClCompile Include="Settings.cpp" />
     <ClCompile Include="Tilemap.cpp" />
   </ItemGroup>
@@ -85,6 +87,8 @@
     <ClInclude Include="Helpers.h" />
     <ClInclude Include="Language.h" />
     <ClInclude Include="LoadingBar.h" />
+    <ClInclude Include="ResourcePack.h" />
+    <ClInclude Include="Screen.h" />
     <ClInclude Include="Settings.h" />
     <ClInclude Include="Tilemap.h" />
   </ItemGroup>

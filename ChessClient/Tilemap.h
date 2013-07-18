@@ -3,20 +3,23 @@
 
 #include <string>
 #include <vector>
-#include <SFML/Graphics.hpp>
+#include "SFML/Graphics.hpp"
+#include "ResourcePack.h"
 
 using namespace std;
 
-class Tilemap {
+class Tilemap : public Resource {
 	public:
 		Tilemap(int xnum, int ynum, int w, int h, string file) : countX(xnum), countY(ynum), width(w), height(h), map(xnum*ynum), filename(file) {}; //parms are countX, countY, width, height
 		~Tilemap(void);
 
-		void loadFromFile(void);
+		virtual void load(void); //loads the file passed to the constructor
 
 		sf::Texture *get(int, int) const; //gets the texture
 
 		double completed;
+
+		virtual double getLoadCompletion();
 
 	private:
 		const int countX;

@@ -112,9 +112,11 @@ const string & Settings::get(const string & key){
 		return config.find(key)->second;
 	}catch(exception &e){
 		cout << "Fatal exception";
+		exit(1);
 	}
 }
 
+//don't use this, doesn't seem to work :/
 string & Settings::operator[](const string & key){
 	cout << "Requested key " << key << "\n";
 	return config[key];
