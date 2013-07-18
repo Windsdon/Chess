@@ -11,6 +11,7 @@
 #include "Language.h"
 #include "Tilemap.h"
 #include "ResourcePack.h"
+#include "Screen.h"
 
 using namespace std;
 
@@ -28,11 +29,13 @@ class ChessClient {
 		static const string getUserID(); //returns a unique ID. DO NOT mistake this for Settings['id']. This one generates a random string, that's all.
 		static const int USER_ID_SIZE = 64;
 
+		void render(); //starts the rendering thread
+
 	private:
 		int onStart(); //creates the window and subsystems
 		int onLoad(); //loads the essentials for the interface (such as buttons images)
-		//void onLoop(); //returns only when state is State::ExitRequested
-		//void onRender(); //render everything, blocks update threads while rendering
+		void onLoop(); //does all the loopie stuff
+		void onRender(); //render everything, blocks update threads while rendering
 		//void onEvent(); //checks for the events every update
 		//void onExit(); //destroys all resources, called inside the destructor
 		//void exit(); //sets state to ExitRequested, forcing the application to end
@@ -74,6 +77,8 @@ class ChessClient {
 		static const int texCountY = 5;
 		static const int texWidth = 200;
 		static const int texHeight = 200;
+
+		ScreenManager *manager;
 		
 };
 

@@ -10,10 +10,15 @@
 
 class ScreenItem {
 	public:
-		virtual void draw(sf::RenderWindow*, ResourcePack*) const = 0;
-		virtual void setVisible(bool) = 0;
-		virtual bool isVisible() const = 0;
-		virtual void update(sf::RenderWindow*);
+		ScreenItem(ResourcePack* pack): visible(false), pack(pack) {};
+		virtual void setVisible(bool visible) {this->visible = visible;};
+		virtual bool isVisible() const {return visible;};
+		virtual void draw(sf::RenderWindow*) = 0;
+		virtual void update(sf::RenderWindow*) = 0;
+
+	protected:
+		bool visible;
+		ResourcePack *pack;
 };
 
 using namespace std;

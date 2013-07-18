@@ -74,6 +74,7 @@
   <ItemGroup>
     <ClCompile Include="ChessClient.cpp" />
     <ClCompile Include="Helpers.cpp" />
+    <ClCompile Include="I_Background.cpp" />
     <ClCompile Include="Language.cpp" />
     <ClCompile Include="LoadingBar.cpp" />
     <ClCompile Include="main.cpp" />
@@ -85,6 +86,7 @@
   <ItemGroup>
     <ClInclude Include="ChessClient.h" />
     <ClInclude Include="Helpers.h" />
+    <ClInclude Include="I_Background.h" />
     <ClInclude Include="Language.h" />
     <ClInclude Include="LoadingBar.h" />
     <ClInclude Include="ResourcePack.h" />

@@ -4,6 +4,7 @@
 #include <iostream>
 #include "LoadingBar.h"
 #include "Helpers.h"
+#include "I_Background.h"
 
 const string ChessClient::defaultHost = "";
 const string ChessClient::title = "CheZ";
@@ -16,7 +17,7 @@ ChessClient::ChessClient(void) : host(defaultHost) {
 
 //if this is called, when the application loads it will automatically connect to autoHost
 ChessClient::ChessClient(string autoHost) : host(autoHost) {
-	
+
 }
 
 
@@ -84,7 +85,7 @@ int ChessClient::onLoad(){
 	int barHeight = 50;
 
 	LoadingBar loadingBar((width - barWidth)/2,  (height - barHeight)/2, barWidth, barHeight, 10, 0);
-	
+
 	//sf::Thread loaderThread();
 	sf::Font loadingFont;
 	if(!loadingFont.loadFromFile("ARLRDBD.TTF")){
@@ -95,7 +96,7 @@ int ChessClient::onLoad(){
 	sf::Text loadingText(lang->get(Language::Dicio::LOADING_TEXT), loadingFont, 30);
 
 	sf::FloatRect bounds = loadingText.getGlobalBounds();
-	
+
 	cout << "Coords are (" << bounds.top << "," << bounds.left << "," << bounds.width << "," << bounds.height << ")\n";
 
 	loadingText.setPosition((width - bounds.width)/2, ((height - barHeight)/2 - 2*bounds.height));
@@ -108,13 +109,10 @@ int ChessClient::onLoad(){
 
 	sf::Thread loadTextures(&Tilemap::load, defaultMap);
 	loadTextures.launch();
-	
+
 	//resources.load(); //TODO!
 
-	sf::Sprite horse;
-	horse.setColor(sf::Color::Green);
-
-	while(window->isOpen()){
+	while(state == State::Loading && window->isOpen()){
 
 		sf::Event e;
 		while(window->pollEvent(e)){
@@ -131,15 +129,78 @@ int ChessClient::onLoad(){
 			loadingBar.setCompletion(resources.getLoadCompletion());
 			window->draw(loadingText);
 		}else{
-			horse.setTexture(*defaultMap->get(4,0));
-			window->draw(horse);
+			//load complete! let's loop!
+			state = State::Running;
 		}
 		window->display();
 	}
 
+	if(state == State::Running){
+		//we create the screen manager
+		manager = new ScreenManager(window, &resources);
+
+		//and add the screens to it
+		//shoudl probably add this to the loading bar :/
+		cout << "Creating screens\n";
+
+		Screen *testScreen = new Screen(window, &resources, "Test");
+
+		I_Background *bg = new I_Background();
+		bg->setType(I_Background::Type::Gradient);
+		//bg->setColor(sf::Color::White);
+		bg->setGradientColor(sf::Color::Black, sf::Color::White);
+
+		testScreen->addComponent(bg);
+
+		manager->add(testScreen);
+		manager->setActive(testScreen);
+
+		//start the rendering thread
+		window->setActive(false);
+		sf::Thread *rendering = new sf::Thread(&ChessClient::render, this);
+		rendering->launch();
+	}
+
+	while(state == State::Running){
+		//onRender();
+		onLoop();
+	}
+
 	settings.saveToFile();
+
+	delete window;
 
 	return 0;
 }
 
+void ChessClient::onLoop(){
+	//cout << "Game loop\n";
+	sf::Event e;
+	while(window->pollEvent(e)){
+		//cout << "Event";
+		if(e.type == sf::Event::Closed){
+			cout << "*** Exit requested\n";
+			state = State::ExitRequested;
+		}
+	}
+	if(!manager->update()){
+		cout << "Ending\n";
+		state = State::ExitRequested;
+	}
+	sf::sleep(sf::seconds(0.1));
+}
 
+void ChessClient::onRender(){
+	window->clear();
+	manager->draw();
+	window->display();
+}
+
+void ChessClient::render(){
+	//activate the window on this thread
+	cout << "*** Render thread started\n";
+	window->setActive(true);
+	while(state == State::Running){
+		onRender();
+	}
+}

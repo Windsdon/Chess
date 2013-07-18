@@ -1,5 +1,7 @@
 #include "Screen.h"
 
+#include <iostream>
+
 Screen::~Screen(void) {
 	//TODO
 }
@@ -14,8 +16,9 @@ int Screen::numComponents() const{
 }
 
 void Screen::draw() const{
+	//cout << "Rendering screen " << id << endl;
 	for(list<ScreenItem*>::const_iterator it = items.begin(); it != items.end(); ++it){
-		(*it)->draw(window, pack);
+		(*it)->draw(window);
 	}
 }
 
@@ -62,6 +65,7 @@ Screen *ScreenManager::getActive(){
 }
 
 void ScreenManager::draw() {
+	//cout << "Drawing\n";
 	Screen *ptr = getActive();
 	if(ptr != nullptr){
 		ptr->draw();
