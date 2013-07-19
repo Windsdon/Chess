@@ -31,7 +31,7 @@ class Screen {
 		void addComponent(ScreenItem*);
 		int numComponents() const;
 
-		virtual void draw() const;
+		virtual void draw();
 
 		void setActive(bool active) {this->active = active;}; //don't use this directly if you are using a ScreenManager!
 		bool isActive(void) const {return active;};

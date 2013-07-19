@@ -1,6 +1,6 @@
 # Chess config file
 antiAlias=2
-framerate=0
+framerate=vsync
 fullscreen=false
 height=720
 lang=EN

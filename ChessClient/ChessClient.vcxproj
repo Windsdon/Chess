@@ -73,8 +73,11 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="ChessClient.cpp" />
+    <ClCompile Include="Font.cpp" />
     <ClCompile Include="Helpers.cpp" />
     <ClCompile Include="I_Background.cpp" />
+    <ClCompile Include="I_FPScounter.cpp" />
+    <ClCompile Include="I_Text.cpp" />
     <ClCompile Include="Language.cpp" />
     <ClCompile Include="LoadingBar.cpp" />
     <ClCompile Include="main.cpp" />
@@ -85,8 +88,11 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ChessClient.h" />
+    <ClInclude Include="Font.h" />
     <ClInclude Include="Helpers.h" />
     <ClInclude Include="I_Background.h" />
+    <ClInclude Include="I_FPScounter.h" />
+    <ClInclude Include="I_Text.h" />
     <ClInclude Include="Language.h" />
     <ClInclude Include="LoadingBar.h" />
     <ClInclude Include="ResourcePack.h" />

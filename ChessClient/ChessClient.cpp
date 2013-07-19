@@ -5,6 +5,8 @@
 #include "LoadingBar.h"
 #include "Helpers.h"
 #include "I_Background.h"
+#include "I_FPScounter.h"
+#include "Font.h"
 
 const string ChessClient::defaultHost = "";
 const string ChessClient::title = "CheZ";
@@ -104,13 +106,20 @@ int ChessClient::onLoad(){
 	cout << "Creating tilemap\n";
 
 	defaultMap = new Tilemap(texCountX, texCountY, texWidth, texHeight, "res/tilemap.png");
+	Font *font = new Font("ARLRDBD.TTF");
+	Font *fpsfont = new Font("res/erbos_draco_1st_open_nbp.ttf");
 
 	resources.add(defaultMap, "tilemap");
+	resources.add(font, "font");
+	resources.add(fpsfont, "fpsfont");
 
-	sf::Thread loadTextures(&Tilemap::load, defaultMap);
-	loadTextures.launch();
+	//sf::Thread loadTextures(&Tilemap::load, defaultMap);
+	//loadTextures.launch();
 
-	//resources.load(); //TODO!
+	sf::Thread loadResources(&ResourcePack::load, &resources); //TODO - Add each loading in a different thread
+	loadResources.launch();
+
+	//resources.load(); //TODO
 
 	while(state == State::Loading && window->isOpen()){
 
@@ -131,6 +140,10 @@ int ChessClient::onLoad(){
 		}else{
 			//load complete! let's loop!
 			state = State::Running;
+			/*sf::Text k("Testando", *(static_cast<Font*>((resources.get("fpsfont")))), 30);
+			k.setColor(sf::Color::Blue);
+			k.setPosition(0, 0);
+			window->draw(k);*/
 		}
 		window->display();
 	}
@@ -145,12 +158,20 @@ int ChessClient::onLoad(){
 
 		Screen *testScreen = new Screen(window, &resources, "Test");
 
-		I_Background *bg = new I_Background();
+		I_Background *bg = new I_Background(&resources);
+		I_FPScounter *fpscounter = new I_FPScounter(&resources, "fpsfont", 1000);
+
+		fpscounter->setPosition(0,0);
+		fpscounter->setColor(sf::Color::Yellow);
+		fpscounter->setSize(10);
+		fpscounter->setVisible(true);
+
 		bg->setType(I_Background::Type::Gradient);
-		//bg->setColor(sf::Color::White);
+		bg->setVisible(true);
 		bg->setGradientColor(sf::Color::Black, sf::Color::White);
 
 		testScreen->addComponent(bg);
+		testScreen ->addComponent(fpscounter);
 
 		manager->add(testScreen);
 		manager->setActive(testScreen);
@@ -187,7 +208,7 @@ void ChessClient::onLoop(){
 		cout << "Ending\n";
 		state = State::ExitRequested;
 	}
-	sf::sleep(sf::seconds(0.1));
+	sf::sleep(sf::seconds(0.05));
 }
 
 void ChessClient::onRender(){

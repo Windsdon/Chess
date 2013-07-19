@@ -27,13 +27,14 @@ Resource* ResourcePack::get(string id){
 }
 
 void ResourcePack::load(){
-	//for(map<string, Resource*>::iterator it = resources.begin(); it != resources.end(); ++it){
-	//	//sf::Thread loader(&Resource::load, it->second); //if this doesn't work, try using new sf::Thread, because it may get out of scope
-	//	sf::Thread loader(Functor(), it->second);
-	//	loadingThreads.push_front(&loader); //I don't know if I really need to store these :S
-	//	cout << "Starting new loading thread\n";
-	//	loader.launch();
-	//}
+	for(map<string, Resource*>::iterator it = resources.begin(); it != resources.end(); ++it){
+		//sf::Thread loader(&Resource::load, it->second); //if this doesn't work, try using new sf::Thread, because it may get out of scope
+		//sf::Thread loader(Functor(), it->second);
+		//loadingThreads.push_front(&loader); //I don't know if I really need to store these :S
+		//cout << "Starting new loading thread\n";
+		//loader.launch();
+		it->second->load();
+	}
 }
 
 bool ResourcePack::isLoaded(){

@@ -7,7 +7,7 @@ Screen::~Screen(void) {
 }
 
 void Screen::addComponent(ScreenItem *item){
-	items.push_front(item);
+	items.push_back(item);
 	components++;
 }
 
@@ -15,10 +15,13 @@ int Screen::numComponents() const{
 	return components;
 }
 
-void Screen::draw() const{
+void Screen::draw(){
 	//cout << "Rendering screen " << id << endl;
-	for(list<ScreenItem*>::const_iterator it = items.begin(); it != items.end(); ++it){
-		(*it)->draw(window);
+	for(list<ScreenItem*>::iterator it = items.begin(); it != items.end(); ++it){
+		//cout << "Redered one\n";
+		if((*it)->isVisible()){
+			(*it)->draw(window);
+		}
 	}
 }
 
