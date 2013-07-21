@@ -1,5 +1,6 @@
 #include "I_FPScounter.h"
 #include <stdio.h>
+#include <sstream>
 #include <iostream>
 
 void I_FPScounter::draw(sf::RenderWindow *window){
@@ -21,11 +22,11 @@ void I_FPScounter::update(sf::RenderWindow*){
 		tfps = 0;
 		tcps = 0;
 
-		char buffer[30];
-
-		sprintf_s(buffer, 30, "FPS %2d\nCPS %2d", fps, cps);
+		stringstream ss;
+		ss << fps << "/" << cps;
 	
-		string f(buffer);
+		string f;
+		ss >> f;
 
 		I_Text::setText(f);
 

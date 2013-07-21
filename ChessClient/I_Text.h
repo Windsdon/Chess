@@ -16,7 +16,7 @@ class I_Text : public ScreenItem{
 		virtual void draw(sf::RenderWindow*);
 		virtual void update(sf::RenderWindow*) {}; //do nothin', it 'be' just text!
 
-		void setText(const string &text) {object.setString(text);};
+		void setText(const string text) {object.setString(text);};
 		void setColor(const sf::Color &color) {object.setColor(color);};
 		void setStyle(const sf::Text::Style &style) {object.setStyle(style);};
 		void setSize(unsigned int size) {object.setCharacterSize(size);};
@@ -25,9 +25,9 @@ class I_Text : public ScreenItem{
 		void setOrigin(sf::Vector2f);
 		void setOrigin(float, float);
 
-	private:
+	protected:
 		Font *font;
-		string text;
+		//string text;
 		sf::Transform *transf;
 		sf::Text object;
 };

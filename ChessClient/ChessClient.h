@@ -79,6 +79,13 @@ class ChessClient {
 		static const int texHeight = 200;
 
 		ScreenManager *manager;
+
+		sf::Clock tickClock;
+		double timePerTick;
+		static const int ticksPerSecond = 20;
+		double lastDk;
+
+		sf::Mutex readMutex;
 		
 };
 

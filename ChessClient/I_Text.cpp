@@ -22,7 +22,7 @@ void I_Text::setTransform(const sf::Transform &transform){
 }
 
 void I_Text::draw(sf::RenderWindow* window){
-	string t = object.getString();
+	//string t = object.getString();
 	//cout << "I'm drawing the text! " << t << endl;
 	if(transf != nullptr){
 		window->draw(object, *transf);

@@ -42,6 +42,8 @@ int ChessClient::start(){
 int ChessClient::onStart(){
 	state = State::NotStarted;
 
+	timePerTick = 1.0/ticksPerSecond;
+
 	stringstream wconv(settings.get("width"));
 	stringstream hconv(settings.get("height"));
 	stringstream aaconv(settings.get("antiAlias"));
@@ -86,7 +88,7 @@ int ChessClient::onLoad(){
 	int barWidth = width/2;
 	int barHeight = 50;
 
-	LoadingBar loadingBar((width - barWidth)/2,  (height - barHeight)/2, barWidth, barHeight, 10, 0);
+	LoadingBar loadingBar((width - barWidth)/2,  (height - barHeight)/2, barWidth, barHeight, 20, 0);
 
 	//sf::Thread loaderThread();
 	sf::Font loadingFont;
@@ -153,7 +155,7 @@ int ChessClient::onLoad(){
 		manager = new ScreenManager(window, &resources);
 
 		//and add the screens to it
-		//shoudl probably add this to the loading bar :/
+		//should probably add this to the loading bar :/
 		cout << "Creating screens\n";
 
 		Screen *testScreen = new Screen(window, &resources, "Test");
@@ -163,7 +165,7 @@ int ChessClient::onLoad(){
 
 		fpscounter->setPosition(0,0);
 		fpscounter->setColor(sf::Color::Yellow);
-		fpscounter->setSize(10);
+		fpscounter->setSize(20);
 		fpscounter->setVisible(true);
 
 		bg->setType(I_Background::Type::Gradient);
@@ -197,6 +199,7 @@ int ChessClient::onLoad(){
 void ChessClient::onLoop(){
 	//cout << "Game loop\n";
 	sf::Event e;
+	tickClock.restart();
 	while(window->pollEvent(e)){
 		//cout << "Event";
 		if(e.type == sf::Event::Closed){
@@ -204,16 +207,30 @@ void ChessClient::onLoop(){
 			state = State::ExitRequested;
 		}
 	}
+
+	readMutex.lock();
 	if(!manager->update()){
 		cout << "Ending\n";
 		state = State::ExitRequested;
 	}
-	sf::sleep(sf::seconds(0.05));
+	readMutex.unlock();
+
+	double dk = tickClock.getElapsedTime().asSeconds();
+	double k = timePerTick - dk;
+	if(k < 0){
+		cout << "Can't keep up at 20cps!\n";
+	}else{
+		sf::sleep(sf::seconds(k));
+	}
 }
 
 void ChessClient::onRender(){
 	window->clear();
+
+	readMutex.lock();
 	manager->draw();
+	readMutex.unlock();
+
 	window->display();
 }
 
